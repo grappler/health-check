@@ -24,6 +24,22 @@ h3 {
 .issues-wrapper {
 
 	margin-bottom: 5rem;
+
+	.issues {
+
+		.actions {
+
+			button {
+
+				margin-left: 1rem;
+
+				&:first-child {
+
+					margin-left: 0;
+				}
+			}
+		}
+	}
 }
 
 .site-status-all-clear {

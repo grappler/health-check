@@ -170,11 +170,9 @@ class Health_Check_Site_Status {
 					);
 
 					$result['actions'] = sprintf(
-						'<a href="%s">%s</a><a href="%s">%s</a>',
-						esc_url( admin_url( '' ) ),
-						esc_html__( 'Install the latest version of WordPress', 'health-check' ),
-						esc_url( 'TODO: Link to release notes' ),
-						esc_html__( 'Read the release notes', 'health-check' )
+						'<a href="%s">%s</a>',
+						esc_url( admin_url( 'update-core.php' ) ),
+						esc_html__( 'Install the latest version of WordPress', 'health-check' )
 					);
 
 					if ( $current_major !== $new_major ) {
@@ -313,6 +311,11 @@ class Health_Check_Site_Status {
 					$plugins_needs_update
 				)
 			);
+
+			$result['actions'] .= sprintf(
+				'<button type="button" class="button button-primary health-check-action" data-health-check-action="update_plugins">%s</button>',
+				esc_html__( 'Update all available plugins', 'health-check' )
+			);
 		} else {
 			$result['description'] .= sprintf(
 				'<p>%s</p>',
@@ -348,6 +351,11 @@ class Health_Check_Site_Status {
 					) ),
 					$unused_plugins
 				)
+			);
+
+			$result['actions'] .= sprintf(
+				'<button type="button" class="button button-primary health-check-action" data-health-check-action="delete_inactive_plugins">%s</button>',
+				esc_html__( 'Delete inactive plugins', 'health-check' )
 			);
 		}
 
@@ -436,6 +444,11 @@ class Health_Check_Site_Status {
 					$themes_need_updates
 				)
 			);
+
+			$result['actions'] .= sprintf(
+				'<button type="button" class="button button-primary health-check-action" data-health-check-action="update_themes">%s</button>',
+				esc_html__( 'Update all available themes', 'health-check' )
+			);
 		} else {
 			$result['description'] .= sprintf(
 				'<p>%s</p>',
@@ -477,6 +490,11 @@ class Health_Check_Site_Status {
 					)
 				);
 
+				$result['actions'] .= sprintf(
+					'<button type="button" class="button button-primary health-check-action" data-health-check-action="delete_inactive_themes">%s</button>',
+					esc_html__( 'Delete inactive themes', 'health-check' )
+				);
+
 			} else {
 				$result['status'] = 'recommended';
 
@@ -497,6 +515,11 @@ class Health_Check_Site_Status {
 						$active_theme->name
 					)
 				);
+
+				$result['actions'] .= sprintf(
+					'<button type="button" class="button button-primary health-check-action" data-health-check-action="delete-inactive-themes">%s</button>',
+					esc_html__( 'Delete inactive themes', 'health-check' )
+				);
 			}
 		}
 
@@ -508,6 +531,11 @@ class Health_Check_Site_Status {
 			$result['description'] .= sprintf(
 				'<p>%s</p>',
 				esc_html__( 'Your site does not have any default theme. Default themes are used by WordPress automatically if anything is wrong with your normal theme.', 'health-check' )
+			);
+
+			$result['actions'] .= sprintf(
+				'<button type="button" class="button button-primary health-check-action" data-health-check-action="install-default-theme">%s</button>',
+				esc_html__( 'Install a default theme', 'health-check' )
 			);
 		}
 
@@ -1051,6 +1079,11 @@ class Health_Check_Site_Status {
 		);
 
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			$result['actions'] .= sprintf(
+				'<button type="button" class="button button-primary health-check-action" data-health-check-action="disable-debug-mode">%s</button>',
+				esc_html__( 'Disable debug mode', 'health-check' )
+			);
+
 			if ( defined( 'WP_DEBUG_LOG' ) && WP_DEBUG_LOG ) {
 				$result['label'] = esc_html__( 'Your site is set to log errors to a potentially public file.', 'health-check' );
 
@@ -1059,6 +1092,11 @@ class Health_Check_Site_Status {
 				$result['description'] .= sprintf(
 					'<p>%s</p>',
 					esc_html__( 'The value, WP_DEBUG_LOG, has been added to this websites configuration file. This means any errors on the site will be written to a file which is potentially available to normal users.', 'health-check' )
+				);
+
+				$result['actions'] .= sprintf(
+					'<button type="button" class="button button-primary health-check-action" data-health-check-action="lock_debug_log_file">%s</button>',
+					esc_html__( 'Lock the logfile', 'health-check' )
 				);
 			}
 
@@ -1070,6 +1108,11 @@ class Health_Check_Site_Status {
 				$result['description'] .= sprintf(
 					'<p>%s</p>',
 					esc_html__( 'The value, WP_DEBUG_DISPLAY, has either been added to your configuration file, or left with its default value. This will make errors display on the front end of your site.', 'health-check' )
+				);
+
+				$result['actions'] .= sprintf(
+					'<button type="button" class="button button-primary health-check-action" data-health-check-action="disable_debug_mode_display">%s</button>',
+					esc_html__( 'Stop showing errors publicly', 'health-check' )
 				);
 			}
 		}
@@ -1112,10 +1155,9 @@ class Health_Check_Site_Status {
 					)
 				);
 
-				$result['actions'] = sprintf(
-					'<a href="%s">%s</a>',
-					esc_url( admin_url( 'options-general.php' ) ),
-					esc_html__( 'Update your site addresses', 'health-check' )
+				$result['actions'] .= sprintf(
+					'<button type="button" class="button button-primary health-check-action" data-health-check-action="enable_site_https">%s</button>',
+					esc_html__( 'Enable HTTPS on your entire site', 'health-check' )
 				);
 			} else {
 				$result['status'] = 'good';
@@ -1174,7 +1216,7 @@ class Health_Check_Site_Status {
 
 			$result['description'] .= sprintf(
 				'<p>%s</p>',
-				esc_html__( 'Talk to your web host about OpenSSL support for PHP', 'health-check' )
+				esc_html__( 'Talk to your web host about OpenSSL support for PHP.', 'health-check' )
 			);
 		}
 
@@ -1208,7 +1250,7 @@ class Health_Check_Site_Status {
 				'<p>%s</p>',
 				sprintf(
 					// translators: %s: The error message returned while from the cron scheduler.
-					esc_html__( 'While trying to test your sites scheduled events, the following error was returned: %s', 'health-check' ),
+					esc_html__( 'While trying to test your site\'s scheduled events, the following error was returned: %s', 'health-check' ),
 					$scheduled_events->has_missed_cron()->get_error_message()
 				)
 			);

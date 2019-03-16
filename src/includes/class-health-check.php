@@ -217,6 +217,7 @@ class Health_Check {
 				'mail_check'                  => wp_create_nonce( 'health-check-mail-check' ),
 				'site_status'                 => wp_create_nonce( 'health-check-site-status' ),
 				'site_status_result'          => wp_create_nonce( 'health-check-site-status-result' ),
+				'site_status_action'          => wp_create_nonce( 'health-check-site-status-action' ),
 			),
 			'site_status' => array(
 				'direct' => array(),
