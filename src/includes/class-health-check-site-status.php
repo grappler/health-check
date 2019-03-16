@@ -1171,7 +1171,7 @@ class Health_Check_Site_Status {
 
 			$result['description'] = sprintf(
 				'<p>%s</p>',
-				esc_html__( 'An HTTPS connection is needed for many features on the web today, it also gains the trust of your visitors by helping to protecting their online privacy.', 'health-check' )
+				esc_html__( 'An HTTPS connection is needed for many features on the web today, it also gains the trust of your visitors by helping to protect their online privacy.', 'health-check' )
 			);
 
 			$result['actions'] = sprintf(
