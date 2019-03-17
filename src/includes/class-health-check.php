@@ -126,11 +126,13 @@ class Health_Check {
 			return;
 		}
 
+		// Instead of using output buffers it would be better for Health_Check_Troubleshoot::setup_must_use_plugin and Health_Check_Troubleshoot::maybe_update_must_use_plugin() to return the error message. 
 		ob_start();
 
 		$needs_credentials = false;
 
 		if ( ! Health_Check_Troubleshoot::mu_plugin_exists() ) {
+			// I am though not sure how to handle Health_Check::get_filesystem_credentials(), that may be only one to use output buffering for.
 			if ( ! Health_Check::get_filesystem_credentials() ) {
 				$needs_credentials = true;
 			} else {
@@ -148,6 +150,8 @@ class Health_Check {
 		$result = ob_get_clean();
 
 		if ( $needs_credentials ) {
+			// Does this need to be an array with objects as this is the only reference?
+			// The objects are not used in any special way thus making it better then an array.
 			$this->admin_notices[] = (object) array(
 				'message' => $result,
 				'type'    => 'warning',
@@ -490,6 +494,8 @@ class Health_Check {
 	public function admin_notices() {
 		foreach ( $this->admin_notices as $admin_notice ) {
 			printf(
+				// The p tags are invalid as the $admin_notice->message contains p tags too. p tags cannot be placed within each other.
+				// This markup is very similar to display_notice(). Are two functions needed?
 				'<div class="notice notice-%s"><p>%s</p></div>',
 				esc_attr( $admin_notice->type ),
 				$admin_notice->message
