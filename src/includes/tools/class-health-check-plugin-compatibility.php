@@ -106,8 +106,9 @@ class Health_Check_Plugin_Compatibility extends Health_Check_Tool {
 		if ( false === $tide_versions ) {
 			$tide_api_respone = wp_remote_get(
 				sprintf(
-					'https://wptide.org/api/tide/v1/audit/wporg/plugin/%s',
-					$slug
+					'https://wptide.org/api/tide/v1/audit/wporg/plugin/%s/%s/',
+					$slug,
+					$version
 				)
 			);
 
